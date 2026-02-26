@@ -1,4 +1,3 @@
-// api/profile.js
 import { getDb } from "../lib/db.js";
 import { getUserFromRequest } from "../lib/auth.js";
 
@@ -11,8 +10,7 @@ export default async function handler(req, res) {
   try {
     const sql = getDb();
     const rows = await sql`
-      SELECT id, email, firstname, lastname, phone, birthdate, city, nationality,
-             bio, linkedin, github, photo, language, role, class, "group", created_at
+      SELECT id, email, firstname, lastname, phone, photo, language, role, created_at
       FROM users WHERE id = ${user.id} LIMIT 1
     `;
 
