@@ -1,9 +1,10 @@
 {
   "rewrites": [
-    { "source": "/login.html", "destination": "/login.html" },
-    { "source": "/dashboard.html", "destination": "/dashboard.html" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/$1" }
+    { "source": "/login.html", "destination": "/public/login.html" },
+    { "source": "/dashboard.html", "destination": "/public/dashboard.html" },
+    { "source": "/style.css", "destination": "/public/style.css" },
+    { "source": "/", "destination": "/public/login.html" }
   ],
   "headers": [
     {
