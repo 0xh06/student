@@ -1,95 +1,66 @@
 <div class="app-container">
     <aside class="sidebar">
         <div class="sidebar-top">
-            <div class="navbar-icon">🎓</div>
-            <h2>Student Portal</h2>
+            <div class="navbar-icon" style="font-size: 2rem;">🎓</div>
+            <h2 style="font-family: 'Syne'; margin-top: 10px;">Student Portal</h2>
         </div>
         <nav class="sidebar-menu">
             <a href="#" class="menu-item active">👤 Informations</a>
             <a href="#" class="menu-item">📢 Annonces</a>
             <a href="#" class="menu-item">✉ Nous contacter</a>
-            </nav>
-        <div class="sidebar-bottom">
-            <form action="/api/logout" method="POST">
-                <button type="submit" class="btn-logout">↳ Déconnexion</button>
-            </form>
-        </div>
+            <a href="#" class="menu-item">📄 Attestations</a>
+            <a href="#" class="menu-item">📅 Emploi du temps</a>
+            <a href="#" class="menu-item">📂 Documents</a>
+        </nav>
+        <form action="/api/logout" method="POST" style="margin-top: auto;">
+            <button type="submit" class="menu-item" style="background: none; border: none; color: #ff5f5f; width: 100%;">↳ Déconnexion</button>
+        </form>
     </aside>
 
     <main class="main-content">
         <header class="dashboard-header">
-            <div class="profile-main">
-                <div class="avatar-container">
-                    <img id="photo" src="placeholder.png" class="avatar-img" alt="Profil">
+            <div style="display: flex; align-items: center; gap: 24px;">
+                <div class="avatar-container" style="position: relative;">
+                    <img id="photo" src="placeholder.png" class="avatar-img" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--accent-1);" alt="Profil">
                 </div>
-                <div class="profile-info">
-                    <div class="id-badge">🛡 Espace Personnel</div>
-                    <h1 id="name">Utilisateur</h1>
-                    <span class="role-tag" id="role-display">Étudiant</span>
-                </div>
-            </div>
-
-            <div class="quick-stats">
-                <div class="stat-card-small">
-                    <div>
-                        <label>EMAIL</label>
-                        <p id="email">Chargement...</p>
-                    </div>
-                </div>
-                <div class="stat-card-small">
-                    <div>
-                        <label>ABSENCES</label>
-                        <p id="absences">0</p>
-                    </div>
-                </div>
-                <div class="stat-card-small">
-                    <div>
-                        <label>GROUPE</label>
-                        <p id="group-display">—</p>
-                    </div>
+                <div>
+                    <h1 id="name" style="font-family: 'Syne'; font-size: 24px;">Chargement...</h1>
+                    <span id="role-display" style="color: var(--accent-1); font-weight: bold;">Étudiant</span>
+                    <p style="color: var(--text-secondary); font-size: 14px;">1ère Année Licence IL</p>
                 </div>
             </div>
         </header>
 
         <section class="details-section">
-            <div class="section-title">
-                <h3>📝 Fiche Informations</h3>
-            </div>
-            
+            <h3 style="font-family: 'Syne'; margin-bottom: 20px;">📝 Informations personnelles</h3>
             <div class="details-grid">
                 <div class="detail-item">
-                    <label>PRÉNOM</label>
+                    <label>Prénom</label>
                     <p id="display-firstname">—</p>
                 </div>
                 <div class="detail-item">
-                    <label>NOM</label>
+                    <label>Nom</label>
                     <p id="display-lastname">—</p>
                 </div>
                 <div class="detail-item">
-                    <label>TÉLÉPHONE</label>
-                    <p id="display-phone">Non renseigné</p>
+                    <label>Email</label>
+                    <p id="email">...</p>
                 </div>
                 <div class="detail-item">
-                    <label>DERNIÈRE CONNEXION</label>
-                    <p id="last-login">—</p>
+                    <label>Groupe</label>
+                    <p id="group-display">A</p>
                 </div>
             </div>
         </section>
 
-        <section id="admin-edit-section" class="edit-card" style="display: none; margin-top: 20px;">
-            <h3>Modifier les informations</h3>
-            <form action="/api/update" method="POST" enctype="multipart/form-data">
-                <div class="form-row">
-                    <div>
-                        <label class="form-label">Prénom</label>
-                        <input type="text" name="firstname" placeholder="Nouveau prénom">
-                    </div>
-                    <div>
-                        <label class="form-label">Nom</label>
-                        <input type="text" name="lastname" placeholder="Nouveau nom">
-                    </div>
+        <section id="admin-edit-section" class="dashboard-header" style="display: none; margin-top: 30px;">
+            <h3 style="font-family: 'Syne'; margin-bottom: 20px;">🛠 Modifier les données (Admin)</h3>
+            <form action="/api/update" method="POST">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <input type="text" name="firstname" placeholder="Nouveau prénom" style="background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 12px; color: white; border-radius: 8px;">
+                    <input type="text" name="lastname" placeholder="Nouveau nom" style="background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 12px; color: white; border-radius: 8px;">
                 </div>
-                <button type="submit" class="btn-update">Mettre à jour ✓</button>
+                <button type="submit" class="btn-primary" style="margin-top: 15px;">Enregistrer ✓</button>
             </form>
         </section>
     </main>
