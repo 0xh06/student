@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <h2>Student Dashboard</h2>
+</div>
+
+<div class="container">
+
+    <div class="profile-card">
+        <img id="photo" src="" class="profile-pic">
+        <h3 id="name"></h3>
+        <p>Email: <span id="email"></span></p>
+    </div>
+
+    <div class="info-card">
+        <h3>About The Application</h3>
+        <p>
+            This is a Student Management Application. 
+            The paragraphs here cannot be modified.
+            You can only change your personal information.
+        </p>
+    </div>
+
+    <div class="edit-card">
+        <h3>Edit Profile</h3>
+        <form action="/update" method="POST" enctype="multipart/form-data">
+            <input type="text" name="firstname" placeholder="First Name" required>
+            <input type="text" name="lastname" placeholder="Last Name" required>
+            <input type="text" name="phone" placeholder="Phone Number">
+            <input type="file" name="photo">
+            <select name="language">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+            </select>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
