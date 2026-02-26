@@ -1,44 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Student Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="navbar">
-    <h2>Student Dashboard</h2>
+    <div class="navbar-brand">
+        <div class="navbar-icon">🎓</div>
+        <h2>Student Portal</h2>
+    </div>
+    <div class="navbar-status">
+        <div class="status-dot"></div>
+        <span>Connecté</span>
+    </div>
 </div>
 
 <div class="container">
 
     <div class="profile-card">
-        <img id="photo" src="" class="profile-pic">
-        <h3 id="name"></h3>
-        <p>Email: <span id="email"></span></p>
+        <div class="profile-pic-wrapper">
+            <img id="photo" src="" class="profile-pic" alt="Photo de profil">
+        </div>
+        <h3 id="name">—</h3>
+        <div class="email-badge">✉ <span id="email"></span></div>
+        <div class="profile-divider"></div>
+        <div class="profile-stat">
+            <span>Statut</span>
+            <span>Étudiant actif</span>
+        </div>
+        <div class="profile-stat">
+            <span>Langue</span>
+            <span id="lang">—</span>
+        </div>
+        <div class="profile-stat">
+            <span>Téléphone</span>
+            <span id="phone">—</span>
+        </div>
     </div>
 
     <div class="info-card">
-        <h3>About The Application</h3>
+        <h3>À propos de l'application</h3>
         <p>
-            This is a Student Management Application. 
-            The paragraphs here cannot be modified.
-            You can only change your personal information.
+            Bienvenue dans le Student Management System. Cette plateforme vous permet de gérer
+            votre profil étudiant, de mettre à jour vos informations personnelles et de 
+            personnaliser votre expérience. Les sections de contenu général ne peuvent pas être
+            modifiées — seules vos informations personnelles sont éditables.
         </p>
     </div>
 
     <div class="edit-card">
-        <h3>Edit Profile</h3>
+        <h3>Modifier le profil</h3>
         <form action="/update" method="POST" enctype="multipart/form-data">
-            <input type="text" name="firstname" placeholder="First Name" required>
-            <input type="text" name="lastname" placeholder="Last Name" required>
-            <input type="text" name="phone" placeholder="Phone Number">
-            <input type="file" name="photo">
+            <div class="form-row">
+                <div>
+                    <label class="form-label">Prénom</label>
+                    <input type="text" name="firstname" placeholder="Votre prénom" required>
+                </div>
+                <div>
+                    <label class="form-label">Nom</label>
+                    <input type="text" name="lastname" placeholder="Votre nom" required>
+                </div>
+            </div>
+
+            <label class="form-label">Téléphone</label>
+            <input type="text" name="phone" placeholder="+212 6XX XXX XXX">
+
+            <label class="form-label">Photo de profil</label>
+            <input type="file" name="photo" accept="image/*">
+
+            <label class="form-label">Langue préférée</label>
             <select name="language">
-                <option value="fr">Français</option>
-                <option value="en">English</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="en">🇬🇧 English</option>
             </select>
-            <button type="submit">Update</button>
+
+            <button type="submit" class="btn-update" style="margin-top:20px">
+                Enregistrer les modifications ✓
+            </button>
         </form>
     </div>
 
