@@ -8,12 +8,7 @@
             <a href="#" class="menu-item active">👤 Informations</a>
             <a href="#" class="menu-item">📢 Annonces</a>
             <a href="#" class="menu-item">✉ Nous contacter</a>
-            <a href="#" class="menu-item">📄 Attestations</a>
-            <a href="#" class="menu-item">📅 Emploi du temps</a>
-            <a href="#" class="menu-item">📂 Documents</a>
-            <a href="#" class="menu-item">🔥 Événements</a>
-            <a href="#" class="menu-item">💬 Messagerie</a>
-        </nav>
+            </nav>
         <div class="sidebar-bottom">
             <form action="/api/logout" method="POST">
                 <button type="submit" class="btn-logout">↳ Déconnexion</button>
@@ -26,36 +21,31 @@
             <div class="profile-main">
                 <div class="avatar-container">
                     <img id="photo" src="placeholder.png" class="avatar-img" alt="Profil">
-                    <div class="online-status"></div>
                 </div>
                 <div class="profile-info">
-                    <div class="id-badge">🛡 Profil sécurisé</div>
-                    <h1 id="name">Chargement...</h1>
-                    <span class="role-tag">Étudiant</span>
-                    <p class="study-line">1ère Année Licence IL</p>
+                    <div class="id-badge">🛡 Espace Personnel</div>
+                    <h1 id="name">Utilisateur</h1>
+                    <span class="role-tag" id="role-display">Étudiant</span>
                 </div>
             </div>
 
             <div class="quick-stats">
                 <div class="stat-card-small">
-                    <span class="stat-icon">✉</span>
                     <div>
                         <label>EMAIL</label>
-                        <p id="email">...</p>
+                        <p id="email">Chargement...</p>
                     </div>
                 </div>
                 <div class="stat-card-small">
-                    <span class="stat-icon">📝</span>
                     <div>
-                        <label>ABSENCES COURS</label>
-                        <p>2</p>
+                        <label>ABSENCES</label>
+                        <p id="absences">0</p>
                     </div>
                 </div>
                 <div class="stat-card-small">
-                    <span class="stat-icon">👥</span>
                     <div>
                         <label>GROUPE</label>
-                        <p>A</p>
+                        <p id="group-display">—</p>
                     </div>
                 </div>
             </div>
@@ -63,8 +53,7 @@
 
         <section class="details-section">
             <div class="section-title">
-                <h3>📝 Informations personnelles</h3>
-                <button class="refresh-btn">⟳</button>
+                <h3>📝 Fiche Informations</h3>
             </div>
             
             <div class="details-grid">
@@ -78,34 +67,29 @@
                 </div>
                 <div class="detail-item">
                     <label>TÉLÉPHONE</label>
-                    <p id="phone">—</p>
-                    <span class="edit-icon">✎</span>
+                    <p id="display-phone">Non renseigné</p>
                 </div>
                 <div class="detail-item">
-                    <label>LANGUE</label>
-                    <p id="lang">—</p>
-                </div>
-                <div class="detail-item full-width">
-                    <label>À PROPOS</label>
-                    <p>Bienvenue dans le Student Management System. Vos informations personnelles sont éditables ci-dessous.</p>
+                    <label>DERNIÈRE CONNEXION</label>
+                    <p id="last-login">—</p>
                 </div>
             </div>
         </section>
 
-        <section class="edit-card" style="margin-top: 20px;">
-            <h3>Modifier le profil</h3>
+        <section id="admin-edit-section" class="edit-card" style="display: none; margin-top: 20px;">
+            <h3>Modifier les informations</h3>
             <form action="/api/update" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div>
                         <label class="form-label">Prénom</label>
-                        <input type="text" name="firstname" placeholder="Votre prénom" required>
+                        <input type="text" name="firstname" placeholder="Nouveau prénom">
                     </div>
                     <div>
                         <label class="form-label">Nom</label>
-                        <input type="text" name="lastname" placeholder="Votre nom" required>
+                        <input type="text" name="lastname" placeholder="Nouveau nom">
                     </div>
                 </div>
-                <button type="submit" class="btn-update">Enregistrer les modifications ✓</button>
+                <button type="submit" class="btn-update">Mettre à jour ✓</button>
             </form>
         </section>
     </main>
