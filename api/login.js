@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     }
 
     // Issue JWT token
-    const token = signToken({ id: user.id, email: user.email });
+    const token = signToken({ id: user.id, email: user.email, role: user.role });
 
     res.writeHead(302, {
       "Set-Cookie": setCookieHeader(token),
