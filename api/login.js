@@ -1,3 +1,4 @@
+// api/login.js
 import bcrypt from "bcryptjs";
 import { getDb } from "../lib/db.js";
 import { signToken, setCookieHeader } from "../lib/auth.js";
@@ -29,8 +30,8 @@ export default async function handler(req, res) {
       return res.end();
     }
 
-    // ✅ On inclut le role dans le token
-    const token = signToken({ id: user.id, email: user.email, role: user.role });
+    // Issue JWT token
+    const token = signToken({ id: user.id, email: user.email });
 
     res.writeHead(302, {
       "Set-Cookie": setCookieHeader(token),
