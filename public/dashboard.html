@@ -1,91 +1,112 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard — Student Portal</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<div class="navbar">
-    <div class="navbar-brand">
-        <div class="navbar-icon">🎓</div>
-        <h2>Student Portal</h2>
-    </div>
-    <div class="navbar-status">
-        <div class="status-dot"></div>
-        <span>Connecté</span>
-    </div>
-</div>
-
-<div class="container">
-
-    <div class="profile-card">
-        <div class="profile-pic-wrapper">
-            <img id="photo" src="" class="profile-pic" alt="Photo de profil">
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <div class="navbar-icon">🎓</div>
+            <h2>Student Portal</h2>
         </div>
-        <h3 id="name">—</h3>
-        <div class="email-badge">✉ <span id="email"></span></div>
-        <div class="profile-divider"></div>
-        <div class="profile-stat">
-            <span>Statut</span>
-            <span>Étudiant actif</span>
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active">👤 Informations</a>
+            <a href="#" class="menu-item">📢 Annonces</a>
+            <a href="#" class="menu-item">✉ Nous contacter</a>
+            <a href="#" class="menu-item">📄 Attestations</a>
+            <a href="#" class="menu-item">📅 Emploi du temps</a>
+            <a href="#" class="menu-item">📂 Documents</a>
+            <a href="#" class="menu-item">🔥 Événements</a>
+            <a href="#" class="menu-item">💬 Messagerie</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <form action="/api/logout" method="POST">
+                <button type="submit" class="btn-logout">↳ Déconnexion</button>
+            </form>
         </div>
-        <div class="profile-stat">
-            <span>Langue</span>
-            <span id="lang">—</span>
-        </div>
-        <div class="profile-stat">
-            <span>Téléphone</span>
-            <span id="phone">—</span>
-        </div>
-    </div>
+    </aside>
 
-    <div class="info-card">
-        <h3>À propos de l'application</h3>
-        <p>
-            Bienvenue dans le Student Management System. Cette plateforme vous permet de gérer
-            votre profil étudiant, de mettre à jour vos informations personnelles et de 
-            personnaliser votre expérience. Les sections de contenu général ne peuvent pas être
-            modifiées — seules vos informations personnelles sont éditables.
-        </p>
-    </div>
-
-    <div class="edit-card">
-        <h3>Modifier le profil</h3>
-        <form action="/update" method="POST" enctype="multipart/form-data">
-            <div class="form-row">
-                <div>
-                    <label class="form-label">Prénom</label>
-                    <input type="text" name="firstname" placeholder="Votre prénom" required>
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div class="profile-main">
+                <div class="avatar-container">
+                    <img id="photo" src="placeholder.png" class="avatar-img" alt="Profil">
+                    <div class="online-status"></div>
                 </div>
-                <div>
-                    <label class="form-label">Nom</label>
-                    <input type="text" name="lastname" placeholder="Votre nom" required>
+                <div class="profile-info">
+                    <div class="id-badge">🛡 Profil sécurisé</div>
+                    <h1 id="name">Chargement...</h1>
+                    <span class="role-tag">Étudiant</span>
+                    <p class="study-line">1ère Année Licence IL</p>
                 </div>
             </div>
 
-            <label class="form-label">Téléphone</label>
-            <input type="text" name="phone" placeholder="+212 6XX XXX XXX">
+            <div class="quick-stats">
+                <div class="stat-card-small">
+                    <span class="stat-icon">✉</span>
+                    <div>
+                        <label>EMAIL</label>
+                        <p id="email">...</p>
+                    </div>
+                </div>
+                <div class="stat-card-small">
+                    <span class="stat-icon">📝</span>
+                    <div>
+                        <label>ABSENCES COURS</label>
+                        <p>2</p>
+                    </div>
+                </div>
+                <div class="stat-card-small">
+                    <span class="stat-icon">👥</span>
+                    <div>
+                        <label>GROUPE</label>
+                        <p>A</p>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-            <label class="form-label">Photo de profil</label>
-            <input type="file" name="photo" accept="image/*">
+        <section class="details-section">
+            <div class="section-title">
+                <h3>📝 Informations personnelles</h3>
+                <button class="refresh-btn">⟳</button>
+            </div>
+            
+            <div class="details-grid">
+                <div class="detail-item">
+                    <label>PRÉNOM</label>
+                    <p id="display-firstname">—</p>
+                </div>
+                <div class="detail-item">
+                    <label>NOM</label>
+                    <p id="display-lastname">—</p>
+                </div>
+                <div class="detail-item">
+                    <label>TÉLÉPHONE</label>
+                    <p id="phone">—</p>
+                    <span class="edit-icon">✎</span>
+                </div>
+                <div class="detail-item">
+                    <label>LANGUE</label>
+                    <p id="lang">—</p>
+                </div>
+                <div class="detail-item full-width">
+                    <label>À PROPOS</label>
+                    <p>Bienvenue dans le Student Management System. Vos informations personnelles sont éditables ci-dessous.</p>
+                </div>
+            </div>
+        </section>
 
-            <label class="form-label">Langue préférée</label>
-            <select name="language">
-                <option value="fr">🇫🇷 Français</option>
-                <option value="en">🇬🇧 English</option>
-            </select>
-
-            <button type="submit" class="btn-update" style="margin-top:20px">
-                Enregistrer les modifications ✓
-            </button>
-        </form>
-    </div>
-
+        <section class="edit-card" style="margin-top: 20px;">
+            <h3>Modifier le profil</h3>
+            <form action="/api/update" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div>
+                        <label class="form-label">Prénom</label>
+                        <input type="text" name="firstname" placeholder="Votre prénom" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Nom</label>
+                        <input type="text" name="lastname" placeholder="Votre nom" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-update">Enregistrer les modifications ✓</button>
+            </form>
+        </section>
+    </main>
 </div>
-
-<script src="script.js"></script>
-</body>
-</html>
