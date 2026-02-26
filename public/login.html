@@ -1,38 +1,235 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — Student Portal</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusEDU — Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #030508;
+  --deep: #080d18;
+  --surface: #0d1425;
+  --panel: rgba(13,20,37,0.8);
+  --border: rgba(0,212,255,0.15);
+  --glow: #00d4ff;
+  --glow2: #7b61ff;
+  --danger: #ff4b6e;
+  --text: #e8f4ff;
+  --muted: rgba(232,244,255,0.45);
+  --dim: rgba(232,244,255,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* GRID BG */
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove { 0%{background-position:0 0} 100%{background-position:60px 60px} }
+
+/* ORBS */
+.orb {
+  position:fixed;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:0.25;
+  pointer-events:none;
+}
+.orb-1 { width:500px;height:500px;background:var(--glow2);top:-100px;right:-100px; animation:float1 8s ease-in-out infinite; }
+.orb-2 { width:400px;height:400px;background:var(--glow);bottom:-150px;left:-100px; animation:float2 10s ease-in-out infinite; }
+@keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,40px)} }
+@keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,-30px)} }
+
+.login-wrapper {
+  position:relative;
+  z-index:10;
+  width:100%;
+  max-width:460px;
+  padding:20px;
+}
+
+.logo-block {
+  text-align:center;
+  margin-bottom:40px;
+}
+.logo-icon {
+  width:64px;height:64px;
+  background: linear-gradient(135deg, var(--glow2), var(--glow));
+  border-radius:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  margin-bottom:16px;
+  box-shadow: 0 0 40px rgba(0,212,255,0.3), 0 0 80px rgba(123,97,255,0.2);
+  animation: logoPulse 3s ease-in-out infinite;
+}
+@keyframes logoPulse { 0%,100%{box-shadow:0 0 40px rgba(0,212,255,0.3),0 0 80px rgba(123,97,255,0.2)} 50%{box-shadow:0 0 60px rgba(0,212,255,0.5),0 0 100px rgba(123,97,255,0.35)} }
+
+.logo-block h1 {
+  font-family:'Outfit',sans-serif;
+  font-weight:900;
+  font-size:28px;
+  letter-spacing:6px;
+  text-transform:uppercase;
+  background: linear-gradient(135deg, #fff 30%, var(--glow));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.logo-block p {
+  color:var(--muted);
+  font-size:13px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-top:6px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius:24px;
+  padding:40px;
+  backdrop-filter: blur(30px);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 40px 80px rgba(0,0,0,0.5);
+  position:relative;
+  overflow:hidden;
+}
+.card::before {
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background: linear-gradient(90deg, transparent, var(--glow), var(--glow2), transparent);
+  opacity:0.6;
+}
+
+.error-banner {
+  background: rgba(255,75,110,0.12);
+  border: 1px solid rgba(255,75,110,0.3);
+  border-radius:10px;
+  padding:12px 16px;
+  font-size:13px;
+  color:#ff7a95;
+  margin-bottom:24px;
+  display:none;
+}
+.success-banner {
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius:10px;
+  padding:12px 16px;
+  font-size:13px;
+  color:var(--glow);
+  margin-bottom:24px;
+  display:none;
+}
+
+.field-group { margin-bottom:18px; }
+.field-group label {
+  display:block;
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:8px;
+  font-family:'Space Mono', monospace;
+}
+.field-group input {
+  width:100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:14px 18px;
+  color:var(--text);
+  font-family:'Outfit',sans-serif;
+  font-size:15px;
+  outline:none;
+  transition:all 0.3s;
+}
+.field-group input:focus {
+  border-color: var(--glow);
+  background: rgba(0,212,255,0.05);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+}
+.field-group input::placeholder { color:var(--dim); }
+
+.btn {
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:14px;
+  font-family:'Outfit',sans-serif;
+  font-weight:700;
+  font-size:15px;
+  letter-spacing:1px;
+  cursor:pointer;
+  transition:all 0.3s;
+  margin-top:8px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--glow2), var(--glow));
+  color:white;
+  box-shadow: 0 8px 30px rgba(0,212,255,0.25);
+}
+.btn-primary:hover {
+  transform:translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,212,255,0.4);
+}
+.btn-primary:active { transform:translateY(0); }
+</style>
 </head>
-<body class="center">
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
 <div class="login-wrapper">
-    <div class="login-header">
-        <div class="logo-mark">🎓</div>
-        <h1>Student Portal</h1>
-        <p>Connectez-vous à votre espace personnel</p>
-    </div>
+  <div class="logo-block">
+    <div class="logo-icon">🎓</div>
+    <h1>NexusEDU</h1>
+    <p>Portail Étudiant Intelligent</p>
+  </div>
 
-    <div class="card">
-        <p class="card-section-title">Connexion</p>
-        <form action="/api/login" method="POST">
-            <input type="email" name="email" placeholder="Adresse email" required>
-            <input type="password" name="password" placeholder="Mot de passe" required>
-            <button type="submit" class="btn-primary">Se connecter →</button>
-        </form>
+  <div class="card">
+    <div class="error-banner" id="errorBanner"></div>
+    <div class="success-banner" id="successBanner"></div>
 
-        <div class="form-divider"><span>ou créer un compte</span></div>
-
-        <p class="card-section-title">Inscription</p>
-        <form action="/api/register" method="POST">
-            <input type="email" name="email" placeholder="Nouvel email" required>
-            <input type="password" name="password" placeholder="Créer un mot de passe" required>
-            <button type="submit" class="btn-secondary">Créer un compte</button>
-        </form>
-    </div>
+    <form action="/api/login" method="POST">
+      <div class="field-group">
+        <label>Adresse email</label>
+        <input type="email" name="email" placeholder="vous@universite.fr" required>
+      </div>
+      <div class="field-group">
+        <label>Mot de passe</label>
+        <input type="password" name="password" placeholder="••••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Accéder au portail →</button>
+    </form>
+  </div>
 </div>
 
+<script>
+const params = new URLSearchParams(location.search);
+const err = document.getElementById('errorBanner');
+const ok = document.getElementById('successBanner');
+if(params.get('error')==='missing'){ err.style.display='block'; err.textContent='Veuillez remplir tous les champs.'; }
+if(params.get('error')==='notfound'){ err.style.display='block'; err.textContent='Aucun compte trouvé avec cet email.'; }
+if(params.get('error')==='password'){ err.style.display='block'; err.textContent='Mot de passe incorrect.'; }
+if(params.get('registered')==='1'){ ok.style.display='block'; ok.textContent='Compte créé avec succès. Connectez-vous !'; }
+</script>
 </body>
 </html>
