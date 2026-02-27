@@ -862,7 +862,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
       </div>
       <div class="card-body">
         <div style="margin-bottom:16px">
-          <input type="text" placeholder="🔍  Rechercher un étudiant..." style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;color:var(--text);font-family:Outfit,sans-serif;font-size:14px;outline:none;">
+          <input id="userSearchInput" type="text" placeholder="🔍  Rechercher un étudiant..." style="width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border2);border-radius:12px;padding:12px 16px;color:var(--text);font-family:Outfit,sans-serif;font-size:14px;outline:none;">
         </div>
         <div id="userList" style="display:grid;gap:4px">
           <!-- Populated by JS demo data -->
@@ -1162,67 +1162,113 @@ function setViewMode(mode) {
   }
 }
 
-// ─── DEMO USER LIST ───
-const demoUsers = [
-  {id:1, firstname:'Amina', lastname:'Bensalem', email:'a.bensalem@uni.dz', role:'student', class:'L1 Informatique', group:'Groupe A'},
-  {id:2, firstname:'Karim', lastname:'Ouali', email:'k.ouali@uni.dz', role:'student', class:'L2 Informatique', group:'Groupe B'},
-  {id:3, firstname:'Sara', lastname:'Hadj', email:'s.hadj@uni.dz', role:'teacher', class:'M2 IA', group:'—'},
-  {id:4, firstname:'Mohamed', lastname:'Zidane', email:'m.zidane@uni.dz', role:'student', class:'L1 Informatique', group:'Groupe A'},
-  {id:5, firstname:'Fatima', lastname:'Cherif', email:'f.cherif@uni.dz', role:'student', class:'M1 Génie Logiciel', group:'Groupe C'},
-];
+// ─── REAL USER LIST (from API) ───
+let realUsers = [];
 
-function loadUserList() {
+async function loadUserList() {
   const list = document.getElementById('userList');
-  const roleMap = {admin:'Administrateur',teacher:'Enseignant',student:'Étudiant'};
-  const roleTag = {admin:'tag-amber',teacher:'tag-green',student:'tag-blue'};
-  list.innerHTML = demoUsers.map(u => `
+  list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px">Chargement...</div>';
+  try {
+    const res = await fetch('/api/users');
+    if (!res.ok) { list.innerHTML = '<div style="color:var(--danger);padding:20px">Erreur de chargement</div>'; return; }
+    realUsers = await res.json();
+    renderUserList(realUsers);
+  } catch(e) {
+    list.innerHTML = '<div style="color:var(--danger);padding:20px">Erreur réseau</div>';
+  }
+}
+
+function renderUserList(users) {
+  const list = document.getElementById('userList');
+  const roleMap = {admin:'Administrateur', teacher:'Enseignant', student:'Étudiant'};
+  const roleTag = {admin:'tag-amber', teacher:'tag-green', student:'tag-blue'};
+  if (!users.length) {
+    list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:30px">Aucun utilisateur trouvé</div>';
+    return;
+  }
+  list.innerHTML = users.map(u => {
+    const initials = ((u.firstname||'?')[0] + (u.lastname||'?')[0]).toUpperCase();
+    const fullname = [u.firstname, u.lastname].filter(Boolean).join(' ') || u.email;
+    const meta = [u.email, u.class, u.group].filter(Boolean).join(' · ');
+    return `
     <div class="user-row" onclick="openEdit(${u.id})">
-      <div class="user-mini-avatar">${u.firstname[0]}${u.lastname[0]}</div>
+      <div class="user-mini-avatar">${initials}</div>
       <div class="user-row-info">
-        <div class="user-row-name">${u.firstname} ${u.lastname}</div>
-        <div class="user-row-meta">${u.email} · ${u.class} · ${u.group}</div>
+        <div class="user-row-name">${fullname}</div>
+        <div class="user-row-meta">${meta}</div>
       </div>
-      <span class="tag ${roleTag[u.role]} user-row-meta" style="font-size:10px">${roleMap[u.role]}</span>
+      <span class="tag ${roleTag[u.role]||'tag-blue'} user-row-meta" style="font-size:10px">${roleMap[u.role]||'Étudiant'}</span>
       <div class="user-row-actions">
         <button class="action-btn edit" onclick="event.stopPropagation();openEdit(${u.id})">✏️ Modifier</button>
         <button class="action-btn del" onclick="event.stopPropagation();deleteUser(${u.id})">🗑 Supprimer</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
+
+  // Search filter
+  document.getElementById('userSearchInput').oninput = function() {
+    const q = this.value.toLowerCase();
+    const filtered = realUsers.filter(u =>
+      (u.firstname+' '+u.lastname+' '+u.email).toLowerCase().includes(q)
+    );
+    renderUserList(filtered);
+    // re-bind search after re-render
+    document.getElementById('userSearchInput').value = q;
+    document.getElementById('userSearchInput').oninput = arguments.callee;
+  };
 }
 
 let editingId = null;
 function openEdit(id) {
-  const u = demoUsers.find(x => x.id === id);
+  const u = realUsers.find(x => x.id === id);
   if(!u) return;
   editingId = id;
-  document.getElementById('editFirstname').value = u.firstname;
-  document.getElementById('editLastname').value = u.lastname;
-  document.getElementById('editEmail').value = u.email;
+  document.getElementById('editFirstname').value = u.firstname || '';
+  document.getElementById('editLastname').value = u.lastname || '';
+  document.getElementById('editEmail').value = u.email || '';
   document.getElementById('editPhone').value = u.phone || '';
+  document.getElementById('editRole').value = u.role || 'student';
+  document.getElementById('editClass').value = u.class || 'L1 Informatique';
+  document.getElementById('editGroup').value = u.group || 'Groupe A';
   document.getElementById('editModal').classList.add('open');
 }
 function closeModal() { document.getElementById('editModal').classList.remove('open'); }
-function saveEdit() {
-  const u = demoUsers.find(x => x.id === editingId);
-  if(u) {
-    u.firstname = document.getElementById('editFirstname').value;
-    u.lastname = document.getElementById('editLastname').value;
-    u.email = document.getElementById('editEmail').value;
-    u.role = document.getElementById('editRole').value;
-    u.class = document.getElementById('editClass').value;
-    u.group = document.getElementById('editGroup').value;
+async function saveEdit() {
+  const u = realUsers.find(x => x.id === editingId);
+  if(!u) return;
+  const payload = {
+    id: editingId,
+    firstname: document.getElementById('editFirstname').value,
+    lastname:  document.getElementById('editLastname').value,
+    email:     document.getElementById('editEmail').value,
+    phone:     document.getElementById('editPhone').value,
+    role:      document.getElementById('editRole').value,
+    class:     document.getElementById('editClass').value,
+    group:     document.getElementById('editGroup').value,
+  };
+  try {
+    const res = await fetch('/api/users', {
+      method: 'PUT',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) { const e = await res.json(); showToast('❌ ' + e.error, '❌'); return; }
+    closeModal();
+    showToast('✅ Modifications enregistrées');
     loadUserList();
+  } catch(e) {
+    showToast('❌ Erreur réseau', '❌');
   }
-  closeModal();
-  showToast('✅ Modifications enregistrées');
 }
-function deleteUser(id) {
-  if(confirm('Supprimer cet utilisateur ?')) {
-    const idx = demoUsers.findIndex(x => x.id === id);
-    if(idx > -1) demoUsers.splice(idx, 1);
-    loadUserList();
+async function deleteUser(id) {
+  if(!confirm('Supprimer cet utilisateur ?')) return;
+  try {
+    const res = await fetch('/api/users?id=' + id, { method: 'DELETE' });
+    if (!res.ok) { const e = await res.json(); showToast('❌ ' + e.error, '❌'); return; }
     showToast('🗑️ Utilisateur supprimé');
+    loadUserList();
+  } catch(e) {
+    showToast('❌ Erreur réseau', '❌');
   }
 }
 
