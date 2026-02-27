@@ -397,7 +397,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
       <span class="icon">📄</span> Documents
     </a>
     <a class="nav-item" data-page="announcements" onclick="navTo('announcements',this)">
-      <span class="icon">📢</span> Annonces <span class="nav-badge">2</span>
+      <span class="icon">📢</span> Annonces <span class="nav-badge" id="annBadge" style="display:none">0</span>
     </a>
     <a class="nav-item" data-page="contact" onclick="navTo('contact',this)">
       <span class="icon">✉️</span> Contact
@@ -442,8 +442,8 @@ tr:hover td{background:rgba(255,255,255,0.02);}
       <div class="page-name" id="pageName">Mon Profil</div>
     </div>
     <div class="header-right">
-      <div class="notif-btn" onclick="navTo('announcements', document.querySelector('[data-page=announcements]'))">
-        🔔<span class="notif-dot"></span>
+      <div class="notif-btn" onclick="navTo('announcements', document.querySelector('[data-page=announcements]'));clearNotifCount()">
+        🔔<span class="notif-dot" id="notifDot" style="display:none"></span>
       </div>
     </div>
   </div>
@@ -537,7 +537,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border2)">
                 <span style="color:var(--muted);font-size:13px">Année universitaire</span>
-                <span style="font-weight:700">2024 — 2025</span>
+                <span style="font-weight:700">2025 — 2026</span>
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0">
                 <span style="color:var(--muted);font-size:13px">Statut</span>
@@ -604,13 +604,13 @@ tr:hover td{background:rgba(255,255,255,0.02);}
         <div class="card-body">
           <div style="display:grid;gap:10px">
             <div style="padding:14px;background:rgba(255,181,71,0.06);border:1px solid rgba(255,181,71,0.15);border-radius:12px">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:10px;background:rgba(255,181,71,0.15);color:var(--amber);padding:3px 8px;border-radius:20px;font-weight:700;letter-spacing:1px">URGENT</span></div>
-              <div style="font-weight:700;font-size:14px;margin-bottom:4px">Examen de rattrapage Algo</div>
-              <div style="font-size:12px;color:var(--muted)">Le 15 Février 2025 à 09h00 — Salle A</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:10px;background:rgba(255,181,71,0.15);color:var(--amber);padding:3px 8px;border-radius:20px;font-weight:700;letter-spacing:1px">INFO</span></div>
+              <div style="font-weight:700;font-size:14px;margin-bottom:4px">Bienvenue — Année 2025/2026</div>
+              <div style="font-size:12px;color:var(--muted)">L'année universitaire 2025/2026 a débuté. Consultez régulièrement les annonces.</div>
             </div>
             <div style="padding:14px;background:rgba(0,212,255,0.04);border:1px solid var(--border2);border-radius:12px">
-              <div style="font-weight:700;font-size:14px;margin-bottom:4px">Dépôt des PFE ouvert</div>
-              <div style="font-size:12px;color:var(--muted)">Soumission avant le 28 Février 2025</div>
+              <div style="font-weight:700;font-size:14px;margin-bottom:4px">Aucune annonce urgente</div>
+              <div style="font-size:12px;color:var(--muted)">Aucune annonce pour le moment.</div>
             </div>
           </div>
         </div>
@@ -735,48 +735,44 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   <!-- ═══ PAGE: GRADES ═══ -->
   <div class="page" id="page-grades">
     <div class="card">
-      <div class="card-header"><div class="card-title">🏆 Relevé de notes — S1 2024/2025</div></div>
+      <div class="card-header">
+        <div class="card-title">🏆 Relevé de notes — S1 2025/2026</div>
+        <button id="addGradeBtn" class="btn btn-primary admin-only-btn" style="padding:10px 18px;font-size:13px;display:none" onclick="openAddGradeModal()">+ Ajouter une note</button>
+      </div>
       <div class="card-body">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Module</th><th>TD</th><th>TP</th><th>Examen</th><th>Moyenne</th><th>Statut</th></tr></thead>
-            <tbody>
-              <tr><td><strong>Algorithmique</strong></td><td>16/20</td><td>18/20</td><td>15/20</td><td><strong style="color:var(--green)">16.2</strong></td><td><span class="status-dot dot-green"></span>Validé</td></tr>
-              <tr><td><strong>Bases de données</strong></td><td>14/20</td><td>15/20</td><td>13/20</td><td><strong style="color:var(--glow)">13.8</strong></td><td><span class="status-dot dot-green"></span>Validé</td></tr>
-              <tr><td><strong>Mathématiques</strong></td><td>11/20</td><td>—</td><td>09/20</td><td><strong style="color:var(--amber)">10.2</strong></td><td><span class="status-dot dot-amber"></span>Passable</td></tr>
-              <tr><td><strong>Anglais</strong></td><td>17/20</td><td>—</td><td>16/20</td><td><strong style="color:var(--green)">16.7</strong></td><td><span class="status-dot dot-green"></span>Validé</td></tr>
-              <tr><td><strong>Réseaux</strong></td><td>12/20</td><td>10/20</td><td>08/20</td><td><strong style="color:var(--danger)">9.4</strong></td><td><span class="status-dot dot-red"></span>Rattrapage</td></tr>
-              <tr><td><strong>Systèmes</strong></td><td>14/20</td><td>15/20</td><td>14/20</td><td><strong style="color:var(--glow)">14.2</strong></td><td><span class="status-dot dot-green"></span>Validé</td></tr>
+            <thead><tr><th>Module</th><th>TD</th><th>TP</th><th>Examen</th><th>Moyenne</th><th>Statut</th><th id="gradeActionsHeader" style="display:none">Actions</th></tr></thead>
+            <tbody id="gradesBody">
+              <!-- Populated by JS -->
             </tbody>
           </table>
         </div>
         <div style="display:flex;justify-content:flex-end;padding-top:20px;border-top:1px solid var(--border2);margin-top:10px;gap:40px">
-          <div style="text-align:right"><div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Moyenne générale</div><div style="font-family:'Space Mono';font-weight:700;font-size:28px;color:var(--glow)">13.4</div></div>
-          <div style="text-align:right"><div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Crédits obtenus</div><div style="font-family:'Space Mono';font-weight:700;font-size:28px;color:var(--green)">16/18</div></div>
+          <div style="text-align:right"><div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Moyenne générale</div><div style="font-family:'Space Mono';font-weight:700;font-size:28px;color:var(--glow)" id="avgDisplay">—</div></div>
+          <div style="text-align:right"><div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Crédits obtenus</div><div style="font-family:'Space Mono';font-weight:700;font-size:28px;color:var(--green)" id="creditsDisplay">—</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ PAGE: ABSENCES ═══ -->
   <div class="page" id="page-absences">
     <div class="absence-stat">
-      <div class="absence-box"><div class="absence-num safe">3</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Justifiées</div></div>
-      <div class="absence-box"><div class="absence-num warn">2</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Non justif.</div></div>
-      <div class="absence-box"><div class="absence-num crit">5</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Total</div></div>
+      <div class="absence-box"><div class="absence-num safe" id="absJustCount">0</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Justifiées</div></div>
+      <div class="absence-box"><div class="absence-num warn" id="absUnjustCount">0</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Non justif.</div></div>
+      <div class="absence-box"><div class="absence-num crit" id="absTotalCount">0</div><div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Total</div></div>
     </div>
     <div class="card">
-      <div class="card-header"><div class="card-title">📋 Historique des absences</div></div>
+      <div class="card-header">
+        <div class="card-title">📋 Historique des absences</div>
+        <button id="addAbsenceBtn" class="btn btn-primary admin-only-btn" style="padding:10px 18px;font-size:13px;display:none" onclick="openAddAbsenceModal()">+ Ajouter une absence</button>
+      </div>
       <div class="card-body">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Date</th><th>Module</th><th>Créneau</th><th>Motif</th><th>Statut</th></tr></thead>
-            <tbody>
-              <tr><td>12/01/2025</td><td>Algorithmique</td><td>08h — 10h</td><td>Maladie</td><td><span class="tag tag-green" style="font-size:10px;padding:3px 10px">Justifiée</span></td></tr>
-              <tr><td>20/01/2025</td><td>Réseaux</td><td>16h — 18h</td><td>—</td><td><span class="tag" style="background:rgba(255,75,110,0.1);color:#ff7a95;border:1px solid rgba(255,75,110,0.25);font-size:10px;padding:3px 10px">Non justif.</span></td></tr>
-              <tr><td>03/02/2025</td><td>Mathématiques</td><td>14h — 16h</td><td>Transports</td><td><span class="tag tag-green" style="font-size:10px;padding:3px 10px">Justifiée</span></td></tr>
-              <tr><td>10/02/2025</td><td>Bases de données</td><td>10h — 12h</td><td>—</td><td><span class="tag" style="background:rgba(255,75,110,0.1);color:#ff7a95;border:1px solid rgba(255,75,110,0.25);font-size:10px;padding:3px 10px">Non justif.</span></td></tr>
-              <tr><td>17/02/2025</td><td>Systèmes</td><td>14h — 16h</td><td>Médical</td><td><span class="tag tag-green" style="font-size:10px;padding:3px 10px">Justifiée</span></td></tr>
+            <thead><tr><th>Date</th><th>Module</th><th>Créneau</th><th>Motif</th><th>Statut</th><th id="absActionsHeader" style="display:none">Actions</th></tr></thead>
+            <tbody id="absencesBody">
+              <!-- Populated by JS -->
             </tbody>
           </table>
         </div>
@@ -790,7 +786,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
       <div class="card" style="cursor:pointer" onclick="showToast('📄 Téléchargement en cours...')">
         <div class="card-body" style="display:flex;align-items:center;gap:16px">
           <div style="width:50px;height:50px;background:rgba(0,212,255,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">📜</div>
-          <div><div style="font-weight:700;margin-bottom:4px">Attestation de scolarité</div><div style="font-size:12px;color:var(--muted)">PDF · 2024/2025</div></div>
+          <div><div style="font-weight:700;margin-bottom:4px">Attestation de scolarité</div><div style="font-size:12px;color:var(--muted)">PDF · 2025/2026</div></div>
         </div>
       </div>
       <div class="card" style="cursor:pointer" onclick="showToast('📄 Téléchargement en cours...')">
@@ -802,7 +798,7 @@ tr:hover td{background:rgba(255,255,255,0.02);}
       <div class="card" style="cursor:pointer" onclick="showToast('📄 Téléchargement en cours...')">
         <div class="card-body" style="display:flex;align-items:center;gap:16px">
           <div style="width:50px;height:50px;background:rgba(0,255,170,0.08);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🎓</div>
-          <div><div style="font-weight:700;margin-bottom:4px">Carte étudiant</div><div style="font-size:12px;color:var(--muted)">PDF · 2024/2025</div></div>
+          <div><div style="font-weight:700;margin-bottom:4px">Carte étudiant</div><div style="font-size:12px;color:var(--muted)">PDF · 2025/2026</div></div>
         </div>
       </div>
       <div class="card" style="cursor:pointer" onclick="showToast('📄 Téléchargement en cours...')">
@@ -822,25 +818,11 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 
   <!-- ═══ PAGE: ANNOUNCEMENTS ═══ -->
   <div class="page" id="page-announcements">
-    <div style="display:grid;gap:16px">
-      <div class="card">
-        <div class="card-body" style="display:flex;gap:20px">
-          <div style="min-width:56px;text-align:center"><div style="font-family:'Space Mono';font-weight:700;color:var(--danger);font-size:22px">15</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">FÉV</div></div>
-          <div style="flex:1"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-weight:800;font-size:16px">Examen de rattrapage — Réseaux</span><span class="tag" style="background:rgba(255,75,110,0.1);color:#ff7a95;border:1px solid rgba(255,75,110,0.25);font-size:10px;padding:2px 8px">URGENT</span></div><div style="color:var(--muted);font-size:13px">L'examen de rattrapage du module Réseaux aura lieu le 15 Février 2025 à 09h00, Salle A. Munissez-vous de votre carte étudiant.</div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body" style="display:flex;gap:20px">
-          <div style="min-width:56px;text-align:center"><div style="font-family:'Space Mono';font-weight:700;color:var(--glow);font-size:22px">28</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">FÉV</div></div>
-          <div style="flex:1"><div style="font-weight:800;font-size:16px;margin-bottom:8px">Dépôt des projets PFE</div><div style="color:var(--muted);font-size:13px">La plateforme de soumission des projets de fin d'études est ouverte. Deadline : 28 Février 2025 à 23h59.</div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body" style="display:flex;gap:20px">
-          <div style="min-width:56px;text-align:center"><div style="font-family:'Space Mono';font-weight:700;color:var(--green);font-size:22px">05</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">MAR</div></div>
-          <div style="flex:1"><div style="font-weight:800;font-size:16px;margin-bottom:8px">Journée portes ouvertes</div><div style="color:var(--muted);font-size:13px">Les étudiants bénévoles peuvent s'inscrire auprès de l'administration pour participer à la journée portes ouvertes du 5 Mars 2025.</div></div>
-        </div>
-      </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+      <button id="addAnnouncementBtn" class="btn btn-primary admin-only-btn" style="padding:10px 18px;font-size:13px;display:none" onclick="openAddAnnouncementModal()">+ Nouvelle annonce</button>
+    </div>
+    <div id="announcementsList" style="display:grid;gap:16px">
+      <!-- Populated by JS -->
     </div>
   </div>
 
@@ -861,9 +843,9 @@ tr:hover td{background:rgba(255,255,255,0.02);}
           <div class="card-body">
             <div style="font-weight:700;font-size:15px;margin-bottom:14px">📍 Contacts utiles</div>
             <div style="display:grid;gap:12px">
-              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:10px"><div style="font-size:20px">🏛️</div><div><div style="font-weight:600;font-size:13px">Scolarité</div><div style="font-size:12px;color:var(--muted)">scolarite@universite.dz</div></div></div>
-              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:10px"><div style="font-size:20px">📚</div><div><div style="font-weight:600;font-size:13px">Bibliothèque</div><div style="font-size:12px;color:var(--muted)">biblio@universite.dz</div></div></div>
-              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:10px"><div style="font-size:20px">💳</div><div><div style="font-weight:600;font-size:13px">Service financier</div><div style="font-size:12px;color:var(--muted)">finance@universite.dz</div></div></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:10px"><div style="font-size:20px">🏛️</div><div><div style="font-weight:600;font-size:13px">Scolarité</div><div style="font-size:12px;color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="eb988884878a99829f8eab9e85829d8e9998829f8ec58f91">[email&#160;protected]</a></div></div></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:10px"><div style="font-size:20px">📚</div><div><div style="font-weight:600;font-size:13px">Bibliothèque</div><div style="font-size:12px;color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2d4f444f4144426d5843445b485f5e445948034957">[email&#160;protected]</a></div></div></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:10px;background:rgba(255,255,255,0.03);border-radius:10px"><div style="font-size:20px">💳</div><div><div style="font-weight:600;font-size:13px">Service financier</div><div style="font-size:12px;color:var(--muted)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3d5b54535c535e587d4853544b584f4e544958135947">[email&#160;protected]</a></div></div></div>
             </div>
           </div>
         </div>
@@ -996,13 +978,91 @@ tr:hover td{background:rgba(255,255,255,0.02);}
   </div>
 </div>
 
+<!-- MODAL: Add/Edit Grade (admin) -->
+<div class="modal-overlay" id="gradeModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="gradeModalTitle">➕ Ajouter une note</div>
+      <div class="modal-close" onclick="closeGradeModal()">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Module</label><input type="text" id="gradeModule" placeholder="ex: Algorithmique"></div>
+        <div class="field"><label>TD (/20)</label><input type="number" id="gradeTd" min="0" max="20" step="0.5" placeholder="—"></div>
+        <div class="field"><label>TP (/20)</label><input type="number" id="gradeTp" min="0" max="20" step="0.5" placeholder="—"></div>
+        <div class="field"><label>Examen (/20)</label><input type="number" id="gradeExam" min="0" max="20" step="0.5" placeholder="—"></div>
+        <div class="field"><label>Crédits</label><input type="number" id="gradeCredits" min="1" max="6" value="3"></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveGrade()">Enregistrer ✓</button>
+        <button class="btn btn-secondary" onclick="closeGradeModal()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add Absence (admin) -->
+<div class="modal-overlay" id="absenceModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">➕ Ajouter une absence</div>
+      <div class="modal-close" onclick="closeAbsenceModal()">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Date</label><input type="date" id="absDate"></div>
+        <div class="field"><label>Module</label><input type="text" id="absModule" placeholder="ex: Algorithmique"></div>
+        <div class="field"><label>Créneau</label><input type="text" id="absCreneau" placeholder="ex: 08h — 10h"></div>
+        <div class="field"><label>Motif</label><input type="text" id="absMotif" placeholder="ex: Maladie"></div>
+        <div class="field full"><label>Statut</label>
+          <select id="absStatut">
+            <option value="justified">Justifiée</option>
+            <option value="unjustified">Non justifiée</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveAbsence()">Enregistrer ✓</button>
+        <button class="btn btn-secondary" onclick="closeAbsenceModal()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add Announcement (admin) -->
+<div class="modal-overlay" id="announcementModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="announcementModalTitle">➕ Nouvelle annonce</div>
+      <div class="modal-close" onclick="closeAnnouncementModal()">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field full"><label>Titre</label><input type="text" id="annTitle" placeholder="Titre de l'annonce"></div>
+        <div class="field"><label>Date</label><input type="date" id="annDate"></div>
+        <div class="field"><label>Type</label>
+          <select id="annType">
+            <option value="normal">Normal</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+        <div class="field full"><label>Contenu</label><textarea id="annContent" style="min-height:100px" placeholder="Contenu de l'annonce..."></textarea></div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="saveAnnouncement()">Publier ✓</button>
+        <button class="btn btn-secondary" onclick="closeAnnouncementModal()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast">
   <span class="toast-icon" id="toastIcon">✅</span>
   <span id="toastMsg">Action effectuée</span>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ─── STATE ───
 let currentUser = null;
 let isAdmin = false;
@@ -1073,9 +1133,6 @@ async function loadProfile() {
       document.getElementById('viewToggle').style.display = 'flex';
       loadUserList();
     }
-
-    // Check for absences badge
-    document.getElementById('absenceBadge').style.display = 'inline';
 
   } catch(e) {
     console.error(e);
@@ -1184,20 +1241,286 @@ function previewPhoto(input) {
 
 // ─── TOAST ───
 let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
+function showToast(msg, icon='✅') {
+  const toast = document.getElementById('toast');
   document.getElementById('toastMsg').textContent = msg;
-  t.classList.add('show');
+  document.getElementById('toastIcon').textContent = icon;
+  toast.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// ─── URL PARAMS ───
-const params = new URLSearchParams(location.search);
-if(params.get('updated') === '1') showToast('✅ Profil mis à jour !');
+// ─── GRADES DATA ───
+let gradesData = [];
+let editingGradeIdx = null;
 
-// ─── INIT ───
-loadProfile();
+function renderGrades() {
+  const tbody = document.getElementById('gradesBody');
+  if (!tbody) return;
+  if (gradesData.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:30px">Aucune note enregistrée</td></tr>';
+    document.getElementById('avgDisplay').textContent = '—';
+    document.getElementById('creditsDisplay').textContent = '—';
+    return;
+  }
+  const statusColor = {Validé:'var(--green)', Passable:'var(--amber)', Rattrapage:'var(--danger)'};
+  const dotClass = {Validé:'dot-green', Passable:'dot-amber', Rattrapage:'dot-red'};
+  tbody.innerHTML = gradesData.map((g, i) => {
+    const avg = calcAvg(g);
+    const status = avg >= 12 ? 'Validé' : avg >= 10 ? 'Passable' : 'Rattrapage';
+    const adminCols = isAdmin ? `<td><button class="action-btn edit" onclick="openEditGrade(${i})">✏️</button> <button class="action-btn del" onclick="deleteGrade(${i})">🗑️</button></td>` : '';
+    return `<tr>
+      <td><strong>${g.module}</strong></td>
+      <td>${g.td !== '' ? g.td+'/20' : '—'}</td>
+      <td>${g.tp !== '' ? g.tp+'/20' : '—'}</td>
+      <td>${g.exam !== '' ? g.exam+'/20' : '—'}</td>
+      <td><strong style="color:${statusColor[status]}">${avg.toFixed(1)}</strong></td>
+      <td><span class="status-dot ${dotClass[status]}"></span>${status}</td>
+      ${adminCols}
+    </tr>`;
+  }).join('');
+  // Show/hide actions column header
+  const header = document.getElementById('gradeActionsHeader');
+  if (header) header.style.display = isAdmin ? '' : 'none';
+  // Overall average
+  const total = gradesData.reduce((s, g) => s + calcAvg(g), 0);
+  const avg = (total / gradesData.length).toFixed(1);
+  const totalCredits = gradesData.reduce((s, g) => s + (parseInt(g.credits)||3), 0);
+  const earnedCredits = gradesData.filter(g => calcAvg(g) >= 10).reduce((s, g) => s + (parseInt(g.credits)||3), 0);
+  document.getElementById('avgDisplay').textContent = avg;
+  document.getElementById('creditsDisplay').textContent = `${earnedCredits}/${totalCredits}`;
+}
+
+function calcAvg(g) {
+  const vals = [g.td, g.tp, g.exam].filter(v => v !== '' && v !== null && v !== undefined);
+  if (!vals.length) return 0;
+  return vals.reduce((s, v) => s + parseFloat(v), 0) / vals.length;
+}
+
+function openAddGradeModal() {
+  editingGradeIdx = null;
+  document.getElementById('gradeModalTitle').textContent = '➕ Ajouter une note';
+  document.getElementById('gradeModule').value = '';
+  document.getElementById('gradeTd').value = '';
+  document.getElementById('gradeTp').value = '';
+  document.getElementById('gradeExam').value = '';
+  document.getElementById('gradeCredits').value = '3';
+  document.getElementById('gradeModal').classList.add('open');
+}
+
+function openEditGrade(idx) {
+  editingGradeIdx = idx;
+  const g = gradesData[idx];
+  document.getElementById('gradeModalTitle').textContent = '✏️ Modifier une note';
+  document.getElementById('gradeModule').value = g.module;
+  document.getElementById('gradeTd').value = g.td;
+  document.getElementById('gradeTp').value = g.tp;
+  document.getElementById('gradeExam').value = g.exam;
+  document.getElementById('gradeCredits').value = g.credits || 3;
+  document.getElementById('gradeModal').classList.add('open');
+}
+
+function closeGradeModal() { document.getElementById('gradeModal').classList.remove('open'); }
+
+function saveGrade() {
+  const entry = {
+    module: document.getElementById('gradeModule').value.trim(),
+    td: document.getElementById('gradeTd').value,
+    tp: document.getElementById('gradeTp').value,
+    exam: document.getElementById('gradeExam').value,
+    credits: document.getElementById('gradeCredits').value
+  };
+  if (!entry.module) { showToast('⚠️ Veuillez saisir un module', '⚠️'); return; }
+  if (editingGradeIdx !== null) {
+    gradesData[editingGradeIdx] = entry;
+    showToast('✅ Note modifiée');
+  } else {
+    gradesData.push(entry);
+    showToast('✅ Note ajoutée');
+  }
+  closeGradeModal();
+  renderGrades();
+}
+
+function deleteGrade(idx) {
+  if (confirm('Supprimer cette note ?')) {
+    gradesData.splice(idx, 1);
+    renderGrades();
+    showToast('🗑️ Note supprimée');
+  }
+}
+
+// ─── ABSENCES DATA ───
+let absencesData = [];
+
+function renderAbsences() {
+  const tbody = document.getElementById('absencesBody');
+  if (!tbody) return;
+  let just = 0, unjust = 0;
+  if (absencesData.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:30px">Aucune absence enregistrée</td></tr>';
+  } else {
+    tbody.innerHTML = absencesData.map((a, i) => {
+      const isJust = a.statut === 'justified';
+      if (isJust) just++; else unjust++;
+      const badge = isJust
+        ? `<span class="tag tag-green" style="font-size:10px;padding:3px 10px">Justifiée</span>`
+        : `<span class="tag" style="background:rgba(255,75,110,0.1);color:#ff7a95;border:1px solid rgba(255,75,110,0.25);font-size:10px;padding:3px 10px">Non justif.</span>`;
+      const adminCols = isAdmin ? `<td><button class="action-btn del" onclick="deleteAbsence(${i})">🗑️</button></td>` : '';
+      return `<tr>
+        <td>${a.date}</td><td>${a.module}</td><td>${a.creneau}</td>
+        <td>${a.motif || '—'}</td><td>${badge}</td>${adminCols}
+      </tr>`;
+    }).join('');
+  }
+  document.getElementById('absJustCount').textContent = just;
+  document.getElementById('absUnjustCount').textContent = unjust;
+  document.getElementById('absTotalCount').textContent = absencesData.length;
+  const header = document.getElementById('absActionsHeader');
+  if (header) header.style.display = isAdmin ? '' : 'none';
+}
+
+function openAddAbsenceModal() {
+  document.getElementById('absDate').value = '';
+  document.getElementById('absModule').value = '';
+  document.getElementById('absCreneau').value = '';
+  document.getElementById('absMotif').value = '';
+  document.getElementById('absStatut').value = 'justified';
+  document.getElementById('absenceModal').classList.add('open');
+}
+function closeAbsenceModal() { document.getElementById('absenceModal').classList.remove('open'); }
+
+function saveAbsence() {
+  const entry = {
+    date: document.getElementById('absDate').value,
+    module: document.getElementById('absModule').value.trim(),
+    creneau: document.getElementById('absCreneau').value.trim(),
+    motif: document.getElementById('absMotif').value.trim(),
+    statut: document.getElementById('absStatut').value
+  };
+  if (!entry.date || !entry.module) { showToast('⚠️ Date et module requis', '⚠️'); return; }
+  absencesData.push(entry);
+  renderAbsences();
+  closeAbsenceModal();
+  showToast('✅ Absence enregistrée');
+}
+
+function deleteAbsence(idx) {
+  if (confirm('Supprimer cette absence ?')) {
+    absencesData.splice(idx, 1);
+    renderAbsences();
+    showToast('🗑️ Absence supprimée');
+  }
+}
+
+// ─── ANNOUNCEMENTS DATA ───
+let announcementsData = [];
+let editingAnnIdx = null;
+
+function renderAnnouncements() {
+  const list = document.getElementById('announcementsList');
+  if (!list) return;
+  if (announcementsData.length === 0) {
+    list.innerHTML = '<div class="card"><div class="card-body" style="text-align:center;color:var(--muted);padding:40px">Aucune annonce pour le moment.</div></div>';
+    return;
+  }
+  const months = ['JAN','FÉV','MAR','AVR','MAI','JUN','JUL','AOÛ','SEP','OCT','NOV','DÉC'];
+  list.innerHTML = announcementsData.map((a, i) => {
+    const d = a.date ? new Date(a.date) : null;
+    const day = d ? d.getDate().toString().padStart(2,'0') : '—';
+    const month = d ? months[d.getMonth()] : '';
+    const urgentBadge = a.type === 'urgent'
+      ? `<span class="tag" style="background:rgba(255,75,110,0.1);color:#ff7a95;border:1px solid rgba(255,75,110,0.25);font-size:10px;padding:2px 8px">URGENT</span>`
+      : '';
+    const dayColor = a.type === 'urgent' ? 'var(--danger)' : 'var(--glow)';
+    const adminBtns = isAdmin ? `<div style="display:flex;gap:8px;margin-top:8px">
+      <button class="action-btn edit" onclick="deleteAnnouncement(${i})">🗑️ Supprimer</button>
+    </div>` : '';
+    return `<div class="card">
+      <div class="card-body" style="display:flex;gap:20px">
+        <div style="min-width:56px;text-align:center">
+          <div style="font-family:'Space Mono';font-weight:700;color:${dayColor};font-size:22px">${day}</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase">${month}</div>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span style="font-weight:800;font-size:16px">${a.title}</span>${urgentBadge}
+          </div>
+          <div style="color:var(--muted);font-size:13px">${a.content}</div>
+          ${adminBtns}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openAddAnnouncementModal() {
+  editingAnnIdx = null;
+  document.getElementById('announcementModalTitle').textContent = '➕ Nouvelle annonce';
+  document.getElementById('annTitle').value = '';
+  document.getElementById('annDate').value = '';
+  document.getElementById('annType').value = 'normal';
+  document.getElementById('annContent').value = '';
+  document.getElementById('announcementModal').classList.add('open');
+}
+function closeAnnouncementModal() { document.getElementById('announcementModal').classList.remove('open'); }
+
+function saveAnnouncement() {
+  const entry = {
+    title: document.getElementById('annTitle').value.trim(),
+    date: document.getElementById('annDate').value,
+    type: document.getElementById('annType').value,
+    content: document.getElementById('annContent').value.trim()
+  };
+  if (!entry.title) { showToast('⚠️ Titre requis', '⚠️'); return; }
+  announcementsData.unshift(entry);
+  renderAnnouncements();
+  closeAnnouncementModal();
+  showToast('✅ Annonce publiée');
+  // Increment notification counter
+  notifCount++;
+  updateNotifUI();
+}
+
+let notifCount = 0;
+function updateNotifUI() {
+  const dot = document.getElementById('notifDot');
+  const badge = document.getElementById('annBadge');
+  if (notifCount > 0) {
+    dot.style.display = '';
+    badge.style.display = '';
+    badge.textContent = notifCount;
+  } else {
+    dot.style.display = 'none';
+    badge.style.display = 'none';
+  }
+}
+function clearNotifCount() {
+  notifCount = 0;
+  updateNotifUI();
+}
+
+function deleteAnnouncement(idx) {
+  if (confirm('Supprimer cette annonce ?')) {
+    announcementsData.splice(idx, 1);
+    renderAnnouncements();
+    showToast('🗑️ Annonce supprimée');
+  }
+}
+
+// ─── INIT ADMIN BUTTONS ───
+function initAdminContentButtons() {
+  document.querySelectorAll('.admin-only-btn').forEach(btn => {
+    btn.style.display = isAdmin ? '' : 'none';
+  });
+  renderGrades();
+  renderAbsences();
+  renderAnnouncements();
+}
+
+loadProfile().then(() => {
+  initAdminContentButtons();
+});
 </script>
 </body>
 </html>
