@@ -1,7 +1,11 @@
+ackage · JSON
+Copy
+
 {
   "name": "student-portal",
   "version": "1.0.0",
   "description": "Student Management Portal",
+  "type": "module",
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",
     "@vercel/blob": "^0.23.0",
